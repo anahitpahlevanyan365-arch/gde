@@ -29,7 +29,23 @@ Open http://localhost:8002
 
 ---
 
-## Deploy to EC2
+## Automatic deploys (GitHub Actions)
+
+Every push to `main` (except changes to `.md` files only) runs [.github/workflows/deploy.yml](.github/workflows/deploy.yml):
+
+1. **Check**: install dependencies, start the app, and test that the pages and login respond.
+2. **Build & push**: build the image and push it to ECR as `sha-<commit>` and `latest`.
+3. **Deploy**: run [deploy/remote-deploy.sh](deploy/remote-deploy.sh) on the instance through SSM Run Command. It backs up `chat.db` (keeps 10 in `/home/ec2-user/backups`), swaps the container, waits for the health check, and **rolls back to the previous image** if the new one is unhealthy.
+
+No AWS keys or SSH keys are stored in GitHub. The workflow gets short-lived credentials by assuming the IAM role `gde-anahit-github-deploy` via GitHub OIDC, and only `main` of `anahitpahlevanyan365-arch/gde` may assume it ([trust policy](deploy/github-trust-policy.json), [permissions](deploy/github-deploy-policy.json)). Port 22 stays closed to GitHub.
+
+**One-time setup:** `bash deploy/setup-aws.sh` (creates the role and gives the instance's role SSM access).
+
+Redeploy without a code change: GitHub → **Actions → Deploy to EC2 → Run workflow**.
+
+The manual steps below still work, for example for the first setup of a new instance.
+
+## Deploy to EC2 (manual)
 
 ### 1. Create an IAM role for the instance
 
