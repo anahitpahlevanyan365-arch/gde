@@ -42,7 +42,7 @@ Open http://localhost:8002
 
 ### 2. Push the image to ECR (from your machine)
 
-Repository: `881490130721.dkr.ecr.us-east-1.amazonaws.com/gde-anahit-nova-chat` (already created; `v1`, `v2` and `latest` pushed. `v2` adds login, the free limit and the context window. Next release: `v3`).
+Repository: `881490130721.dkr.ecr.us-east-1.amazonaws.com/gde-anahit-nova-chat` (already created; `v1`, `v2`, `v3` and `latest` pushed. `v2` adds login, the free limit and the context window; `v3` adds the robot mascot. Next release: `v4`).
 
 Run these in **Git Bash**. Windows PowerShell 5.1 corrupts the password when piping it into `docker login`, and ECR then answers `400 Bad Request`.
 
