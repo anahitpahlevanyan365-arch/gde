@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ "Log in" if mode == "login" else "Sign up" }} · Nova Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    {% include "_robot.html" %}
+
+    {% if mode == "login" %}
+      <h1>Welcome back</h1>
+      <p class="auth-sub">Log in to continue to Nova Chat</p>
+    {% else %}
+      <h1>Create an account</h1>
+      <p class="auth-sub">Sign up to start chatting with Nova</p>
+    {% endif %}
+
+    {% if error %}
+      <div class="auth-error" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" class="auth-form">
+      <input type="hidden" name="next" value="{{ next }}">
+
+      <label class="field">
+        <span>Username</span>
+        <input type="text" name="username" value="{{ username }}" required autofocus
+               autocomplete="username" autocapitalize="none" spellcheck="false"
+               {% if mode == "register" %}minlength="3" maxlength="32" pattern="[A-Za-z0-9_.\-]+"{% endif %}>
+      </label>
+
+      <label class="field">
+        <span>Password</span>
+        <input type="password" name="password" required
+               autocomplete="{{ 'current-password' if mode == 'login' else 'new-password' }}"
+               {% if mode == "register" %}minlength="8"{% endif %}>
+      </label>
+
+      {% if mode == "register" %}
+        <label class="field">
+          <span>Confirm password</span>
+          <input type="password" name="confirm" required autocomplete="new-password" minlength="8">
+        </label>
+        <p class="field-hint">At least 8 characters.</p>
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary auth-submit">
+        {{ "Log in" if mode == "login" else "Sign up" }}
+      </button>
+    </form>
+
+    <p class="auth-switch">
+      {% if mode == "login" %}
+        Don't have an account? <a href="{{ url_for('register', next=next) }}">Sign up</a>
+      {% else %}
+        Already have an account? <a href="{{ url_for('login', next=next) }}">Log in</a>
+      {% endif %}
+    </p>
+  </main>
+  <script src="{{ url_for('static', filename='robot.js') }}"></script>
+</body>
+</html>

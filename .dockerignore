@@ -1,0 +1,12 @@
+.venv/
+.claude/
+__pycache__/
+*.pyc
+*.db
+data/
+.aws/
+.env
+test_bedrock.py
+Dockerfile
+.dockerignore
+DEPLOY.md

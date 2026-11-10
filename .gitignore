@@ -1,0 +1,16 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Local data and secrets (never commit)
+*.db
+*.db-journal
+data/
+secret_key
+.env
+.aws/
+*.pem
+
+# Local Claude Code permissions
+.claude/
